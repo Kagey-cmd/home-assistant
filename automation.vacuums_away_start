@@ -1,0 +1,44 @@
+alias: Vacuums away start
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - person.kody
+      - person.renae
+    from: home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+condition:
+  - condition: and
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: person.kody
+            state: home
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: person.renae
+            state: home
+action:
+  - service: script.turn_on
+    target:
+      entity_id: script.start_vacuum
+    data:
+      variables:
+        vacuum_entity: vacuum.roomba
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: script.turn_on
+    target:
+      entity_id: script.start_vacuum
+    data:
+      variables:
+        vacuum_entity: vacuum.sharkbot
+mode: single
