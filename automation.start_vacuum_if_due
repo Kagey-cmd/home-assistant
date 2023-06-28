@@ -1,0 +1,33 @@
+alias: Start vacuum if due
+description: ""
+trigger:
+  - platform: time
+    at: "08:00:00"
+action:
+  - parallel:
+      - if:
+          - condition: template
+            value_template: >
+              {{ (as_timestamp(now()) -
+              as_timestamp(states('input_datetime.vacuum_cleaning_timestamp_roomba')))
+              | int >= 86400 }}
+        then:
+          - service: script.turn_on
+            target:
+              entity_id: script.start_vacuum
+            data:
+              variables:
+                vacuum_entity: vacuum.roomba
+      - if:
+          - condition: template
+            value_template: >
+              {{ (as_timestamp(now()) -
+              as_timestamp(states('input_datetime.vacuum_cleaning_timestamp_sharkbot')))
+              | int >= 86400 }}
+        then:
+          - service: script.turn_on
+            target:
+              entity_id: script.start_vacuum
+            data:
+              variables:
+                vacuum_entity: vacuum.roomba
