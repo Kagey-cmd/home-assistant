@@ -1,0 +1,19 @@
+alias: Save vacuum timestamp
+trigger:
+  - platform: state
+    entity_id:
+      - vacuum.roomba
+      - vacuum.sharkbot
+    to: cleaning
+action:
+  - service: input_datetime.set_datetime
+    data_template:
+      entity_id: |
+        {% if trigger.entity_id == 'vacuum.roomba' %}
+          input_datetime.vacuum_cleaning_timestamp_roomba
+        {% elif trigger.entity_id == 'vacuum.sharkbot' %}
+          input_datetime.vacuum_cleaning_timestamp_sharkbot
+        {% endif %}
+      datetime: "{{ now().isoformat() }}"
+mode: queued
+max: 10
