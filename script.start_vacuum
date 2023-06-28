@@ -1,0 +1,24 @@
+alias: start_vacuum
+sequence:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ state_attr(vacuum_entity, 'battery_level') | int < 50 }}"
+        sequence:
+          - service: vacuum.return_to_base
+            data:
+              entity_id: "{{ vacuum_entity }}"
+      - conditions:
+          - condition: template
+            value_template: "{{ state_attr(vacuum_entity, 'battery_level') | int >= 50 }}"
+        sequence:
+          - service: vacuum.start
+            data:
+              entity_id: "{{ vacuum_entity }}"
+    default:
+      - service: vacuum.return_to_base
+        data:
+          entity_id: "{{ vacuum_entity }}"
+icon: mdi:robot-vacuum
+mode: parallel
+max: 2
