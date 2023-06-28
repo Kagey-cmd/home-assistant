@@ -1,0 +1,30 @@
+alias: Vacuums home stop
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - person.kody
+      - person.renae
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+    to: home
+condition: []
+action:
+  - service: script.turn_off
+    target:
+      entity_id: script.start_vacuum
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: vacuum.return_to_base
+    target:
+      entity_id:
+        - vacuum.roomba
+        - vacuum.sharkbot
+    data: {}
+mode: single
