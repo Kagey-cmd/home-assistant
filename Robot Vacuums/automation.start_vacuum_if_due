@@ -30,4 +30,4 @@ action:
               entity_id: script.start_vacuum
             data:
               variables:
-                vacuum_entity: vacuum.roomba
+                vacuum_entity: vacuum.sharkbot
